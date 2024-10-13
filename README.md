@@ -1,4 +1,4 @@
-# Django template
+# Asset Manager Backend
 
 ## Technologies
 
@@ -14,7 +14,7 @@
 
 ## Environments
 
-This template is thought and designed for the docker environment. It is not recommended to use it without docker.
+This app is thought and designed for the docker environment. It is not recommended to use it without docker.
 
 
 ### How to use Docker dev
@@ -22,10 +22,10 @@ This template is thought and designed for the docker environment. It is not reco
 1. create a file named `.env` containing the required environment variables (read the next section)
 2. run `docker compose up --build` for dev or `docker compose -f docker-compose.prod.yml up --build` for prod
 3. work with your local files
-4. execute commands inside the container. ex `docker exec -it django-template-app-1 python manage.py makemigrations`
+4. execute commands inside the container. ex `docker exec -it asset-manager-backend-app-1 python manage.py makemigrations`
 
 Use Ruff to check the code quality. `ruff` command is already installed inside the container.
-Example: `docker exec -it django-template-app-1 ruff check .` 
+Example: `docker exec -it asset-manager-backend-app-1 ruff check .` 
 
 ### Features
 
@@ -50,7 +50,7 @@ You have to create a google oauth2 app and add the credentials to the admin page
 To generate the schema.yml file run inside the container
 `python manage.py spectacular --color --file schema.yml`
 or outside the container
-`docker exec -it backend-booking-taranto-app-1 python manage.py spectacular --color --file schema.yml`
+`docker exec -it asset-manager-backend-app-1 python manage.py spectacular --color --file schema.yml`
 
 ### Required environment variables
 
@@ -73,8 +73,6 @@ or outside the container
 | EMAIL_PORT                  | ⚠️ |
 | GOOGLE_CLIENT_ID            | ⚠️ |
 | GOOGLE_CLIENT_SECRET        | ⚠️ |
-| APPLE_CLIENT_ID             | ⚠️ |
-| APPLE_CLIENT_SECRET         | ⚠️ |
 | APPLE_KEY                   | ⚠️ |
 | DEBUG                       | ⚠️ |
 | DJANGO_ALLOWED_HOSTS        | ✅  |
@@ -98,9 +96,6 @@ EMAIL_HOST_USER=yourmail@gmail.com (gmail_username)
 EMAIL_PORT=587
 GOOGLE_CLIENT_ID=32193185322-05a6v4duc3cqhk25mjdc015g2903kr1n.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=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
-APPLE_CLIENT_ID=com.example.app
-APPLE_CLIENT_SECRET=applesecret
-APPLE_KEY=applekey
 DB_NAME=somerandomname
 DB_USERNAME=somerandomusername
 DB_PASSWORD=somerandomstring
