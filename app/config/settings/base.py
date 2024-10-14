@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'django.contrib.sites',
+    'django_filters',
     'allauth',
     'allauth.account',
     'dj_rest_auth',
@@ -32,7 +33,6 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',  # Google OAuth2
-    'allauth.socialaccount.providers.apple',  # Apple OAuth2
     'accounts',
 ]
 
@@ -120,6 +120,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Django Rest Framework settings
 REST_FRAMEWORK = {
     'DATETIME_FORMAT': "%d-%m-%Y %H:%M",
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -128,7 +129,11 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
 }
+
 
 LOGGING = {
     'version': 1,
@@ -185,13 +190,59 @@ LOGGING = {
     },
 }
 
-# Spectacular settings
+# Spectacular settings for drf-spectacular
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Django Template',
-    'DESCRIPTION': 'Django Template',
-    'VERSION': '1.0.0',
-    'SERVE_INCLUDE_SCHEMA': False,
-    # OTHER SETTINGS
+    # General API Metadata
+    'TITLE': 'IT Asset Management API',  # The title of your API
+    'DESCRIPTION': 'API for managing IT assets within the company',  # A brief description of your API
+    'VERSION': 'v1',  # The current version of your API
+
+    # Schema Serving Options
+    'SERVE_INCLUDE_SCHEMA': False,  # Whether to include the OpenAPI schema in the schema view
+
+    # Contact Information
+    'CONTACT': {
+        'name': 'Support Team',  # Contact person's or team's name
+        'email': 'contact@example.com',  # Contact email address
+    },
+
+    # License Information
+    'LICENSE': {
+        'name': 'BSD License',  # License name
+    },
+
+    # Tags for Categorizing API Endpoints
+    'TAGS': [
+        {
+            'name': 'departments',
+            'description': 'Operations related to departments',
+        },
+        {
+            'name': 'users',
+            'description': 'User management and operations',
+        },
+        {
+            'name': 'maintenance-interventions',
+            'description': 'Manage maintenance interventions for devices',
+        },
+        {
+            'name': 'devices',
+            'description': 'CRUD operations for devices',
+        },
+        {
+            'name': 'suppliers',
+            'description': 'Manage suppliers of hardware and software',
+        },
+        {
+            'name': 'software',
+            'description': 'CRUD operations for software and license management',
+        },
+        # Add more tags as needed to cover all your models and functionalities
+    ],
+
+    # Example: Adding Default Request Body Examples (Optional)
+    'DEFAULT_GENERATOR_CLASS': 'drf_spectacular.generators.SchemaGenerator',  # Use default generator
+    'ENUM_USE_NAMES': True,  # Use enum names instead of values in schema
 }
 
 # Email
@@ -232,11 +283,6 @@ LOGIN_REDIRECT_URL = 'http://localhost:8000/api/v1/auth/login/'
 GOOGLE_CLIENT_ID = config('GOOGLE_CLIENT_ID')
 GOOGLE_CLIENT_SECRET = config('GOOGLE_CLIENT_SECRET')
 
-# Apple OAuth2 Credentials
-APPLE_CLIENT_ID = config('APPLE_CLIENT_ID')
-APPLE_CLIENT_SECRET = config('APPLE_CLIENT_SECRET')
-APPLE_KEY = config('APPLE_KEY')
-
 SOCIALACCOUNT_PROVIDERS = {
     # Create a Google OAuth2 application at https://console.developers.google.com/
     "google": {
@@ -258,27 +304,4 @@ SOCIALACCOUNT_PROVIDERS = {
             "access_type": "online",
         }
     },
-    "apple": {
-        "APP": {
-            # Your service identifier.
-            "client_id": APPLE_CLIENT_ID,
-
-            # The Key ID (visible in the "View Key Details" page).
-            "secret": APPLE_CLIENT_SECRET,
-
-            # Member ID/App ID Prefix -- you can find it below your name
-            # at the top right corner of the page, or it’s your App ID
-            # Prefix in your App ID.
-            "key": APPLE_KEY,
-
-            # The certificate you downloaded when generating the key.
-            "certificate_key": """-----BEGIN PRIVATE KEY-----
-MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgvz15Eh7LJP8e2W02
-B7LvPbo8e4B7R8asKLnhTs06fFOgCgYIKoZIzj0DAQehRANCAASIBWOEVBL8wsuX
-WJ81uzajtBPVpyHNBxE1H2mv5u5ssJRKc5IDKJ8e5BwfMUIjLC8AcFGP50WCkPPP
-9iGu4DQF
------END PRIVATE KEY-----
-"""
-        }
-    }
 }
