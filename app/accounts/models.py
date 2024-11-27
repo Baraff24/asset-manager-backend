@@ -42,6 +42,8 @@ class User(AbstractUser):
         Department,
         on_delete=models.SET_NULL,
         related_name='users',
+        null=True,
+        blank=True
     )
 
     def __str__(self):
@@ -86,7 +88,6 @@ class Device(models.Model):
     - status: Status of the device (Active, On Maintenance, Inactive)
     - purchase_date: Date of purchase of the device
     - assigned_to: User to whom the device is assigned
-    - maintenance_interventions: List of maintenance interventions performed on the device
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='devices')
     device_id = models.UUIDField(
@@ -107,11 +108,6 @@ class Device(models.Model):
         on_delete=models.SET_NULL,
         related_name='assigned_devices',
         null=True,
-        blank=True
-    )
-    maintenance_interventions = models.ManyToManyField(
-        'MaintenanceIntervention',
-        related_name='devices',
         blank=True
     )
 
