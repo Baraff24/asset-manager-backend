@@ -35,8 +35,6 @@ COPY ./templates /templates/
 RUN adduser --disabled-password --gecos '' celeryuser \
     && chown -R celeryuser /app $STATIC_ROOT $MEDIA_ROOT $LOG_ROOT
 
-RUN chmod +x /scripts/docker/starter_celery.sh
-
 # Set entrypoint and default command
 ENTRYPOINT ["/scripts/docker/wait-for-it.sh", "database:5432" , "-s", "--"]
 CMD ["/scripts/docker/starter.sh"]

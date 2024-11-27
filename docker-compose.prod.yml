@@ -11,24 +11,6 @@ services:
       - static_volume:/vol/staticfiles
       - media_volume:/vol/mediafiles
     depends_on:
-      - redis
-      - database
-
-  redis:
-    image: redis:7
-
-  celery:
-    build: .
-    restart: always
-    command: "/scripts/docker/starter_celery.sh"
-    volumes:
-      - .:/code
-    env_file:
-      - ./.env
-    user: "celeryuser"
-    depends_on:
-      - redis
-      - app
       - database
 
   database:
