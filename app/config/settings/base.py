@@ -177,14 +177,9 @@ LOGGING = {
             'level': 'ERROR',  # Log only error messages
             'propagate': False,
         },
-        'celery': {
-            'handlers': ['console'],
-            'level': 'INFO',  # Celery log level
-            'propagate': False,
-        },
         'accounts': {
             'handlers': ['console', 'file'],
-            'level': 'INFO', # or 'DEBUG' for more logs (testing)
+            'level': 'DEBUG', # or 'DEBUG' for more logs (testing)
             'propagate': False,
         },
     },
