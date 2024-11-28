@@ -1,5 +1,6 @@
 import logging
 
+from django.db.models import Case, When, Value, IntegerField
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -86,8 +87,14 @@ class UserViewSet(viewsets.ModelViewSet):
         Admins see all users; others see only their user.
         """
         user = self.request.user
-        if user.is_staff:
-            return User.objects.all()
+        if user.is_staff or user.is_superuser:
+            return User.objects.annotate(
+                is_current_user=Case(
+                    When(id=user.id, then=Value(0)),
+                    default=Value(1),
+                    output_field=IntegerField(),
+                )
+            ).order_by('is_current_user')
         return User.objects.filter(id=user.id)
 
     def perform_create(self, serializer):
