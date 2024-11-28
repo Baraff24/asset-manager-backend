@@ -83,12 +83,12 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         """
         Optionally restricts the returned users to active users only.
-        Admins see all users; others see only active users.
+        Admins see all users; others see only their user.
         """
         user = self.request.user
         if user.is_staff:
             return User.objects.all()
-        return User.objects.filter(is_active=True)
+        return User.objects.filter(id=user.id)
 
     def perform_create(self, serializer):
         """
