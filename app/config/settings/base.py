@@ -275,8 +275,8 @@ ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 # redirect to the login page in case of authentication failure
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
-LOGIN_URL = 'http://localhost:8000/api/v1/auth/login/'
-LOGIN_REDIRECT_URL = 'http://localhost:8000/api/v1/auth/login/'
+LOGIN_URL = 'https://frontend.raffaelegrieco.it/registration-success'
+LOGIN_REDIRECT_URL = 'https://frontend.raffaelegrieco.it/login'
 
 # Google OAuth2 Credentials
 GOOGLE_CLIENT_ID = config('GOOGLE_CLIENT_ID')
