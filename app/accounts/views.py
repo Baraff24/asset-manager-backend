@@ -3,7 +3,7 @@ import logging
 from django.db.models import Case, When, Value, IntegerField
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework.response import Response
 
 from .permissions import IsActiveAndVerified
@@ -35,7 +35,18 @@ class DepartmentViewSet(viewsets.ModelViewSet):
     """
     queryset = Department.objects.all()
     serializer_class = DepartmentSerializer
-    permission_classes = [IsAuthenticated, IsActiveAndVerified]
+
+    def get_permissions(self):
+        """
+        Assign permissions based on action.
+        - 'create', 'update', 'partial_update', 'destroy' require admin privileges.
+        - 'list', 'retrieve' are public.
+        """
+        if self.action in ['list', 'retrieve']:
+            permission_classes = [AllowAny]
+        else:
+            permission_classes = [IsAuthenticated, IsActiveAndVerified]
+        return [permission() for permission in permission_classes]
 
     def perform_create(self, serializer):
         """
