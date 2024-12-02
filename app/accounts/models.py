@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from .constants import (STATUS_DEVICE_CHOICES, ACTIVE,
@@ -100,8 +102,8 @@ class Device(models.Model):
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='devices')
     device_id = models.UUIDField(
-        primary_key=True,
         editable=False,
+        default=uuid.uuid4,
         unique=True
     )
     brand = models.CharField(max_length=50)

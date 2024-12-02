@@ -90,6 +90,7 @@ class DeviceSerializer(serializers.ModelSerializer):
     )
     maintenance_interventions = MaintenanceInterventionSerializer(many=True, read_only=True)
     softwares = serializers.PrimaryKeyRelatedField(many=True, queryset=Software.objects.all(), required=False)
+    device_id = serializers.UUIDField(read_only=True)
 
     class Meta:
         model = Device
