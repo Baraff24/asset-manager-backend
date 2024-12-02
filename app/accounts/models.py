@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from .constants import STATUS_DEVICE_CHOICES, ACTIVE, GENDER_CHOICES, NONE
+from .constants import (STATUS_DEVICE_CHOICES, ACTIVE,
+                        GENDER_CHOICES, NONE,
+                        STATUS_MAINTENANCE_CHOICES, PENDING)
 
 
 class Department(models.Model):
@@ -56,7 +58,9 @@ class MaintenanceIntervention(models.Model):
     Fields:
     - device: Device that received the maintenance intervention
     - description: Description of the maintenance intervention
-    - date: Date of the maintenance intervention
+    - date_intervention: Date of the maintenance intervention
+    - technician: User who performed the maintenance intervention
+    - status: Status of the maintenance intervention (Pending, In Progress, Completed)
     """
     device = models.ForeignKey(
         'Device',
@@ -71,6 +75,11 @@ class MaintenanceIntervention(models.Model):
         related_name='maintenance_interventions',
         null=True,
         blank=True
+    )
+    status = models.CharField(
+        max_length=50,
+        choices=STATUS_MAINTENANCE_CHOICES,
+        default=PENDING
     )
 
     def __str__(self):
@@ -96,6 +105,7 @@ class Device(models.Model):
         unique=True
     )
     brand = models.CharField(max_length=50)
+    name = models.CharField(max_length=50)
     serial_number = models.CharField(max_length=50)
     status = models.CharField(
         max_length=50,
