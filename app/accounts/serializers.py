@@ -78,7 +78,7 @@ class MaintenanceInterventionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MaintenanceIntervention
-        fields = ['id', 'device', 'description', 'date_intervention', 'technician']
+        fields = ['id', 'device', 'description', 'date_intervention', 'status', 'technician']
 
 
 class DeviceSerializer(serializers.ModelSerializer):
